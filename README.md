@@ -9,7 +9,7 @@ Aplicación multiplataforma (Móvil, Web y Escritorio) desarrollada en **Flutter
 
 ---
 
-## 👨‍💻 Información Académica
+##  Información Académica
 
 * **Institución:** Servicio Nacional de Adiestramiento en Trabajo Industrial (SENATI)
 * **Carrera / Módulo:** Ingeniería de Software con IA / Desarrollo de Aplicaciones Multiplataforma
@@ -19,37 +19,37 @@ Aplicación multiplataforma (Móvil, Web y Escritorio) desarrollada en **Flutter
 
 ---
 
-## ✨ Características Principales
+##  Características Principales
 
-1. **🔐 Autenticación y Control de Acceso (Login):**
+1. ** Autenticación y Control de Acceso (Login):**
    - Credenciales fijas: Usuario `admin` / Contraseña `admin123`.
    - Cápsula interactiva de autocompletado rápido para demostraciones.
    - Ocultamiento dinámico de contraseña y alertas visuales.
    - Cierre de sesión seguro (`Logout`) desde la barra superior.
 
-2. **🎨 Sistema de Diseño Obsidian Cyber Glow:**
+2. ** Sistema de Diseño Obsidian Cyber Glow:**
    - Inspirado en las interfaces modernas de vanguardia (Linear, Vercel, Supabase y Raycast).
    - Canvas y superficies oscuras profundas con micro-bordes luminosos.
    - Gradientes vibrantes (*Electric Indigo* a *Cyber Violet*, *Cyan Radiante*).
    - Etiquetas de precios estilo *Fintech & Neon Mint* con indicadores de disponibilidad en stock.
    - Neón distintivo por categoría de hardware (Hardware, Procesadores, Almacenamiento, Periféricos).
 
-3. **🔍 Búsqueda y Filtrado Reactivo:**
+3. ** Búsqueda y Filtrado Reactivo:**
    - Filtros horizontales interactivos (`FilterChips`) con conteo dinámico de productos.
    - Barra de búsqueda en tiempo real que filtra por nombre, descripción y categoría simultáneamente.
 
-4. **📱 Diseño 100% Responsive:**
+4. ** Diseño 100% Responsive:**
    - Optimizado para teléfonos móviles (360x780), tablets y monitores de escritorio (1920x1080).
    - Sin desbordamientos de interfaz gráfica (`zero RenderFlex overflow`).
 
-5. **⚡ Gestión Dinámica de Hardware (CRUD con Undo):**
+5. ** Gestión Dinámica de Hardware (CRUD con Undo):**
    - Modal táctil para registrar nuevos componentes con validación estricta.
    - Eliminación individual de productos y menú dedicado para periféricos.
    - Notificación emergente (`SnackBar`) con opción reactiva **DESHACER** (*Undo*).
 
 ---
 
-## 🚀 Cómo Ejecutar el Proyecto
+##  Cómo Ejecutar el Proyecto
 
 ### Requisitos Previos
 * Flutter SDK (3.x o superior)
@@ -79,7 +79,7 @@ flutter build apk --debug
 
 ---
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```
 lib/
@@ -102,6 +102,6 @@ lib/
 
 ---
 
-## 📄 Licencia
+##  Licencia
 
 Desarrollado con fines educativos y de evaluación académica para **SENATI**.
