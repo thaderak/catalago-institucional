@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/component_item.dart';
 import 'screens/details_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/login_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -20,13 +21,23 @@ class CatalogoSenatiApp extends StatelessWidget {
       title: 'Catálogo SENATI',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      initialRoute: '/home',
+      initialRoute: '/login',
       onGenerateRoute: (settings) {
         final routeName = settings.name ?? '';
 
-        // Soporte unificado para rutas SPA tanto web (#) como móviles/desktop
+        // Ruta de Login (inicial)
         if (routeName == '/' ||
-            routeName == '/home' ||
+            routeName == '/login' ||
+            routeName == '/#/login' ||
+            routeName.startsWith('/login')) {
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => const LoginScreen(),
+          );
+        }
+
+        // Soporte unificado para rutas SPA tanto web (#) como móviles/desktop
+        if (routeName == '/home' ||
             routeName == '/#/home' ||
             routeName.startsWith('/home')) {
           return MaterialPageRoute(
@@ -45,10 +56,10 @@ class CatalogoSenatiApp extends StatelessWidget {
           );
         }
 
-        // Por defecto redirige a HomeScreen
+        // Por defecto redirige a LoginScreen
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const HomeScreen(),
+          builder: (_) => const LoginScreen(),
         );
       },
     );

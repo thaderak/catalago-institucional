@@ -458,6 +458,87 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  /// Muestra diálogo de confirmación para cerrar sesión y volver a LoginScreen
+  void _confirmLogout() {
+    showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+          side: const BorderSide(color: AppTheme.borderMedium, width: 1.5),
+        ),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEFF6FF),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xFFBFDBFE)),
+              ),
+              child: const FaIcon(
+                FontAwesomeIcons.arrowRightFromBracket,
+                color: Color(0xFF0284C7),
+                size: 16,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'Cerrar Sesión',
+                style: AppTheme.headingStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: AppTheme.primaryBlue,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          '¿Desea cerrar la sesión de usuario y regresar a la pantalla de acceso?',
+          style: AppTheme.bodyStyle(
+            fontSize: 13,
+            color: AppTheme.textPrimary,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(
+              'Cancelar',
+              style: AppTheme.bodyStyle(
+                color: AppTheme.textSecondary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text(
+              'Cerrar sesión',
+              style: AppTheme.bodyStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ).then((confirmed) {
+      if (confirmed == true && mounted) {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    });
+  }
+
   // ===========================================================================
   // CONSTRUCCIÓN VISUAL DEL WIDGET (BUILD METHOD)
   // ===========================================================================
@@ -563,6 +644,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               });
             },
+          ),
+          IconButton(
+            icon: const FaIcon(
+              FontAwesomeIcons.arrowRightFromBracket,
+              size: 17,
+              color: Colors.white,
+            ),
+            tooltip: 'Cerrar sesión',
+            onPressed: _confirmLogout,
           ),
           const SizedBox(width: 6),
         ],
