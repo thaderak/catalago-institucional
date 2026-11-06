@@ -3,14 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/component_item.dart';
 import '../theme/app_theme.dart';
 
-/// ============================================================================
-/// FORMULARIO MODAL EMERGENTE: AddComponentModal
-/// ============================================================================
-/// Widget con estado que gestiona la entrada estructurada y validación de datos
-/// para registrar un nuevo componente tecnológico en el Catálogo SENATI.
-/// Emplea FormState, TextEditingController y Material Design 3.
+/// Formulario modal emergente con estética Obsidian Dark Tech
 class AddComponentModal extends StatefulWidget {
-  /// Callback ejecutado cuando el usuario completa y valida el formulario exitosamente
   final ValueChanged<ComponentItem> onComponentAdded;
 
   const AddComponentModal({
@@ -18,9 +12,6 @@ class AddComponentModal extends StatefulWidget {
     required this.onComponentAdded,
   });
 
-  /// Despliegue asíncrono inteligente:
-  /// - En pantallas de escritorio / Web (> 700px) abre un [showDialog] centrado.
-  /// - En pantallas de teléfonos móviles abre un [showModalBottomSheet] táctil.
   static Future<void> show(
     BuildContext context, {
     required ValueChanged<ComponentItem> onComponentAdded,
@@ -65,26 +56,14 @@ class AddComponentModal extends StatefulWidget {
 }
 
 class _AddComponentModalState extends State<AddComponentModal> {
-  // ===========================================================================
-  // CONTROLADORES Y LLAVE DE FORMULARIO
-  // ===========================================================================
-
-  /// Llave global para acceder al estado del formulario y ejecutar validaciones
   final _formKey = GlobalKey<FormState>();
 
-  /// Controlador de texto para el campo "Nombre del Componente"
   final _nameController = TextEditingController();
-
-  /// Controlador de texto para el campo numérico "Precio"
   final _priceController = TextEditingController();
-
-  /// Controlador de texto para el campo multilínea "Descripción Técnica"
   final _descriptionController = TextEditingController();
 
-  /// Categoría seleccionada por defecto en el menú desplegable
   String _selectedCategory = 'Hardware';
 
-  /// Lista de opciones disponibles para el Dropdown institucional
   final List<String> _availableCategories = [
     'Hardware',
     'Procesadores',
@@ -94,31 +73,20 @@ class _AddComponentModalState extends State<AddComponentModal> {
 
   @override
   void dispose() {
-    // Liberación estricta de controladores en memoria
     _nameController.dispose();
     _priceController.dispose();
     _descriptionController.dispose();
     super.dispose();
   }
 
-  // ===========================================================================
-  // LÓGICA DE VALIDACIÓN Y PERSISTENCIA TEMPORAL
-  // ===========================================================================
-
-  /// Valida la integridad de los datos ingresados:
-  /// - Campos no vacíos
-  /// - Formato numérico válido > 0 para el precio
-  /// - Descripción con al menos 5 caracteres
   void _submitForm() {
     if (_formKey.currentState?.validate() ?? false) {
-      // Limpieza de caracteres de moneda si el usuario escribió "S/ " o comas
       final cleanPriceString = _priceController.text
           .replaceAll('S/', '')
           .replaceAll(',', '')
           .trim();
       final double parsedPrice = double.tryParse(cleanPriceString) ?? 0.0;
 
-      // Creación de la nueva entidad con ID único basado en timestamp
       final newComponent = ComponentItem(
         id: 'comp-${DateTime.now().millisecondsSinceEpoch}',
         name: _nameController.text.trim(),
@@ -127,20 +95,16 @@ class _AddComponentModalState extends State<AddComponentModal> {
         description: _descriptionController.text.trim(),
       );
 
-      // Inyección del nuevo componente al estado superior
       widget.onComponentAdded(newComponent);
-
-      // Cierre del modal emergente
       Navigator.of(context).pop();
 
-      // Retroalimentación visual inmediata al usuario
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
             children: [
               const FaIcon(
                 FontAwesomeIcons.circleCheck,
-                color: Colors.white,
+                color: AppTheme.priceGreen,
                 size: 18,
               ),
               const SizedBox(width: 12),
@@ -155,11 +119,11 @@ class _AddComponentModalState extends State<AddComponentModal> {
               ),
             ],
           ),
-          backgroundColor: AppTheme.priceGreen,
+          backgroundColor: const Color(0xFF062E25),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Color(0xFF166534), width: 1.2),
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(color: AppTheme.priceBadgeBorder, width: 1.2),
           ),
           duration: const Duration(seconds: 3),
         ),
@@ -167,40 +131,36 @@ class _AddComponentModalState extends State<AddComponentModal> {
     }
   }
 
-  // ===========================================================================
-  // INTERFAZ GRÁFICA DEL FORMULARIO
-  // ===========================================================================
-
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width <= 700;
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xFF111A2D),
         borderRadius: isMobile
-            ? const BorderRadius.vertical(top: Radius.circular(20))
-            : BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.borderMedium, width: 1.8),
+            ? const BorderRadius.vertical(top: Radius.circular(22))
+            : BorderRadius.circular(20),
+        border: Border.all(color: AppTheme.borderMedium, width: 1.4),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.12),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: Colors.black.withValues(alpha: 0.45),
+            blurRadius: 30,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
       child: Material(
         color: Colors.transparent,
         borderRadius: isMobile
-            ? const BorderRadius.vertical(top: Radius.circular(20))
-            : BorderRadius.circular(16),
+            ? const BorderRadius.vertical(top: Radius.circular(22))
+            : BorderRadius.circular(20),
         child: SafeArea(
           top: false,
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
-              horizontal: isMobile ? 18 : 24,
-              vertical: isMobile ? 14 : 22,
+              horizontal: isMobile ? 18 : 26,
+              vertical: isMobile ? 16 : 24,
             ),
             child: Form(
               key: _formKey,
@@ -208,7 +168,6 @@ class _AddComponentModalState extends State<AddComponentModal> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Tirador táctil visual para teléfonos móviles
                   if (isMobile) ...[
                     Center(
                       child: Container(
@@ -216,7 +175,7 @@ class _AddComponentModalState extends State<AddComponentModal> {
                         height: 4,
                         margin: const EdgeInsets.only(bottom: 12),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFCBD5E1),
+                          color: const Color(0xFF334155),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
@@ -232,26 +191,22 @@ class _AddComponentModalState extends State<AddComponentModal> {
                           Container(
                             padding: const EdgeInsets.all(7),
                             decoration: BoxDecoration(
-                              color: AppTheme.primaryBlue.withValues(alpha: 0.08),
+                              gradient: AppTheme.primaryGradient,
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: AppTheme.primaryBlue.withValues(alpha: 0.2),
-                                width: 1,
-                              ),
                             ),
                             child: const FaIcon(
                               FontAwesomeIcons.plus,
                               size: 13,
-                              color: AppTheme.primaryBlue,
+                              color: Colors.white,
                             ),
                           ),
                           const SizedBox(width: 10),
                           Text(
                             'Registrar Componente',
                             style: AppTheme.headingStyle(
-                              fontSize: isMobile ? 17 : 18,
+                              fontSize: isMobile ? 17 : 19,
                               fontWeight: FontWeight.w800,
-                              color: AppTheme.textPrimary,
+                              color: Colors.white,
                               letterSpacing: -0.2,
                             ),
                           ),
@@ -281,14 +236,12 @@ class _AddComponentModalState extends State<AddComponentModal> {
                   const Divider(color: AppTheme.borderSubtle, thickness: 1.2),
                   const SizedBox(height: 14),
 
-                  // -----------------------------------------------------------
-                  // CAMPO 1: Nombre del Componente (Texto con icono de laptop)
-                  // -----------------------------------------------------------
+                  // CAMPO 1: Nombre
                   TextFormField(
                     controller: _nameController,
                     style: AppTheme.bodyStyle(
                       fontSize: 14,
-                      color: AppTheme.textPrimary,
+                      color: Colors.white,
                       fontWeight: FontWeight.w600,
                     ),
                     decoration: InputDecoration(
@@ -315,14 +268,13 @@ class _AddComponentModalState extends State<AddComponentModal> {
                   ),
                   const SizedBox(height: 14),
 
-                  // -----------------------------------------------------------
-                  // CAMPO 2: Categoría (DropdownButtonFormField con icono jerarquía)
-                  // -----------------------------------------------------------
+                  // CAMPO 2: Categoría
                   DropdownButtonFormField<String>(
                     initialValue: _selectedCategory,
+                    dropdownColor: const Color(0xFF162238),
                     style: AppTheme.bodyStyle(
                       fontSize: 14,
-                      color: AppTheme.textPrimary,
+                      color: Colors.white,
                       fontWeight: FontWeight.w600,
                     ),
                     decoration: const InputDecoration(
@@ -332,7 +284,7 @@ class _AddComponentModalState extends State<AddComponentModal> {
                         child: FaIcon(
                           FontAwesomeIcons.sitemap,
                           size: 15,
-                          color: AppTheme.secondaryBlue,
+                          color: AppTheme.accentIndigo,
                         ),
                       ),
                     ),
@@ -351,7 +303,7 @@ class _AddComponentModalState extends State<AddComponentModal> {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            Text(category),
+                            Text(category, style: const TextStyle(color: Colors.white)),
                           ],
                         ),
                       );
@@ -372,15 +324,13 @@ class _AddComponentModalState extends State<AddComponentModal> {
                   ),
                   const SizedBox(height: 14),
 
-                  // -----------------------------------------------------------
-                  // CAMPO 3: Precio (Numérico con máscara/ejemplo e icono moneda)
-                  // -----------------------------------------------------------
+                  // CAMPO 3: Precio
                   TextFormField(
                     controller: _priceController,
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     style: AppTheme.bodyStyle(
                       fontSize: 14,
-                      color: AppTheme.textPrimary,
+                      color: Colors.white,
                       fontWeight: FontWeight.w700,
                     ),
                     decoration: const InputDecoration(
@@ -412,15 +362,13 @@ class _AddComponentModalState extends State<AddComponentModal> {
                   ),
                   const SizedBox(height: 14),
 
-                  // -----------------------------------------------------------
-                  // CAMPO 4: Descripción Técnica (Multilínea con icono documento)
-                  // -----------------------------------------------------------
+                  // CAMPO 4: Descripción Técnica
                   TextFormField(
                     controller: _descriptionController,
                     maxLines: 3,
                     style: AppTheme.bodyStyle(
                       fontSize: 13,
-                      color: AppTheme.textPrimary,
+                      color: Colors.white,
                     ),
                     decoration: const InputDecoration(
                       labelText: 'Descripción Técnica',
@@ -431,7 +379,7 @@ class _AddComponentModalState extends State<AddComponentModal> {
                         child: FaIcon(
                           FontAwesomeIcons.fileLines,
                           size: 15,
-                          color: AppTheme.secondaryBlue,
+                          color: AppTheme.accentIndigo,
                         ),
                       ),
                     ),
@@ -445,23 +393,33 @@ class _AddComponentModalState extends State<AddComponentModal> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 22),
 
-                  // -----------------------------------------------------------
-                  // BOTÓN DE ACCIÓN DESTACADA: Guardar Componente
-                  // -----------------------------------------------------------
-                  SizedBox(
-                    height: 48,
+                  // BOTÓN DE ACCIÓN: Guardar Componente
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      gradient: AppTheme.primaryGradient,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        width: 1.2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.accentIndigo.withValues(alpha: 0.35),
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
                     child: ElevatedButton(
                       onPressed: _submitForm,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primaryBlue,
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: const BorderSide(
-                            color: Color(0xFF1E3A8A),
-                            width: 1.5,
-                          ),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       child: Text(

@@ -3,11 +3,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../theme/app_theme.dart';
 
 /// ============================================================================
-/// PANTALLA DE INICIO DE SESIÓN: LoginScreen (Ruta: /login y /#/login)
+/// PANTALLA DE ACCESO VANGUARDISTA: LoginScreen (Ruta: /login y /#/login)
 /// ============================================================================
-/// Implementa autenticación con usuario y contraseña fijos ("admin" / "admin123"),
-/// diseño dinámico con degradados de color de alta gama (Gradients),
-/// validación de formulario, feedback de error y acceso directo al Catálogo SENATI.
+/// Diseñada con estética Obsidian Dark Tech inspirada en Linear, Vercel y Stripe:
+/// - Fondos con gradiente mesh cósmico y orbes de luz ambiental.
+/// - Tarjeta de vidrio acrílico oscuro (Glassmorphism) con micro-bordes.
+/// - Botón principal con degradado Electric Indigo a Cyber Violet.
+/// - Autenticación con credenciales fijas ("admin" / "admin123").
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login';
   static const String hashRouteName = '/#/login';
@@ -19,19 +21,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Llave global del formulario para validar entradas
   final _formKey = GlobalKey<FormState>();
 
-  // Controladores de texto para usuario y contraseña
   final _userInputController = TextEditingController();
   final _passwordInputController = TextEditingController();
 
-  // Estados interactivos
   bool _obscurePassword = true;
   bool _isLoading = false;
   String? _errorMessage;
 
-  // Credenciales requeridas
+  // Credenciales fijas requeridas
   static const String _validUser = 'admin';
   static const String _validPassword = 'admin123';
 
@@ -44,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   /// Procesa la autenticación del usuario
   Future<void> _handleLogin() async {
-    // Limpiar mensaje de error previo
     setState(() {
       _errorMessage = null;
     });
@@ -60,16 +58,13 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
 
-    // Pequeño delay de 400ms para sensación de proceso fluido y profesional
-    await Future.delayed(const Duration(milliseconds: 400));
+    await Future.delayed(const Duration(milliseconds: 380));
 
     if (!mounted) return;
 
     if (enteredUser == _validUser && enteredPassword == _validPassword) {
-      // Credenciales correctas: navegar a HomeScreen limpiando la pila
       Navigator.pushReplacementNamed(context, '/home');
     } else {
-      // Credenciales incorrectas: mostrar error visual
       setState(() {
         _isLoading = false;
         _errorMessage = 'Usuario o contraseña incorrectos. Verifique sus credenciales.';
@@ -88,21 +83,21 @@ class _LoginScreenState extends State<LoginScreen> {
               const Expanded(
                 child: Text(
                   'Acceso denegado: Credenciales no válidas.',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  style: TextStyle(fontWeight: FontWeight.w700),
                 ),
               ),
             ],
           ),
           backgroundColor: const Color(0xFFDC2626),
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           duration: const Duration(seconds: 3),
         ),
       );
     }
   }
 
-  /// Autocompleta las credenciales de prueba al tocar la cápsula de sugerencia
+  /// Autocompleta las credenciales de prueba al tocar la cápsula
   void _fillDemoCredentials() {
     setState(() {
       _userInputController.text = _validUser;
@@ -117,10 +112,11 @@ class _LoginScreenState extends State<LoginScreen> {
     final isMobile = screenSize.width < 500;
 
     return Scaffold(
+      backgroundColor: AppTheme.scaffoldBg,
       body: Stack(
         children: [
           // -------------------------------------------------------------------
-          // FONDO DINÁMICO CON DEGRADADO DE COLOR CORPORATIVO
+          // FONDO CÓSMICO MESH OBSIDIAN CON DEGRADADO MULTI-NIVEL
           // -------------------------------------------------------------------
           Container(
             width: double.infinity,
@@ -130,44 +126,71 @@ class _LoginScreenState extends State<LoginScreen> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF001F3F), // Azul noche profundo
-                  Color(0xFF003865), // Azul SENATI institucional
-                  Color(0xFF0B3C5D), // Azul petróleo
-                  Color(0xFF0284C7), // Azul cyan luminoso
+                  Color(0xFF050811), // Midnight Black
+                  Color(0xFF090D1A), // Deep Slate
+                  Color(0xFF0E1629), // Indigo Tinted Obsidian
+                  Color(0xFF080D1A), // Pure Obsidian
                 ],
                 stops: [0.0, 0.35, 0.70, 1.0],
               ),
             ),
           ),
 
-          // Círculos difusos decorativos para profundidad visual
+          // Orbes de luz ambiental bioluminiscente (Glow Spheres)
           Positioned(
-            top: -60,
-            left: -60,
+            top: -100,
+            left: -100,
             child: Container(
-              width: 240,
-              height: 240,
+              width: 320,
+              height: 320,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.05),
+                gradient: RadialGradient(
+                  colors: [
+                    AppTheme.accentIndigo.withValues(alpha: 0.18),
+                    Colors.transparent,
+                  ],
+                ),
               ),
             ),
           ),
           Positioned(
-            bottom: -80,
-            right: -80,
+            bottom: -120,
+            right: -100,
             child: Container(
-              width: 280,
-              height: 280,
+              width: 360,
+              height: 360,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFF0284C7).withValues(alpha: 0.15),
+                gradient: RadialGradient(
+                  colors: [
+                    AppTheme.accentCyan.withValues(alpha: 0.15),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: screenSize.height * 0.3,
+            right: -60,
+            child: Container(
+              width: 220,
+              height: 220,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppTheme.accentViolet.withValues(alpha: 0.10),
+                    Colors.transparent,
+                  ],
+                ),
               ),
             ),
           ),
 
           // -------------------------------------------------------------------
-          // CONTENIDO CENTRAL: TARJETA DE ACCESO CON BORDES DEFINIDOS
+          // TARJETA CENTRAL DE ACCESO (Aesthetic Dark Glassmorphism)
           // -------------------------------------------------------------------
           Center(
             child: SingleChildScrollView(
@@ -179,35 +202,40 @@ class _LoginScreenState extends State<LoginScreen> {
                 constraints: const BoxConstraints(maxWidth: 440),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    // Borde marcado y elegante
+                    color: const Color(0xFF111A2D).withValues(alpha: 0.95),
+                    borderRadius: BorderRadius.circular(22),
                     border: Border.all(
                       color: AppTheme.borderMedium,
-                      width: 1.8,
+                      width: 1.4,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.22),
-                        blurRadius: 30,
-                        offset: const Offset(0, 12),
+                        color: Colors.black.withValues(alpha: 0.45),
+                        blurRadius: 36,
+                        offset: const Offset(0, 16),
+                      ),
+                      BoxShadow(
+                        color: AppTheme.accentIndigo.withValues(alpha: 0.08),
+                        blurRadius: 24,
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(22),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Franja superior con degradado decorativo
+                        // Franja superior con gradiente neón estético
                         Container(
-                          height: 7,
+                          height: 5,
                           decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                Color(0xFF003865),
-                                Color(0xFF0284C7),
-                                Color(0xFF38BDF8),
+                                Color(0xFF6366F1), // Electric Indigo
+                                Color(0xFF8B5CF6), // Cyber Violet
+                                Color(0xFF06B6D4), // Cyan
+                                Color(0xFF38BDF8), // Sky Blue
                               ],
                             ),
                           ),
@@ -223,38 +251,31 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                // Ícono circular con degradado
+                                // Ícono circular con aura luminosa
                                 Center(
                                   child: Container(
                                     width: 72,
                                     height: 72,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      gradient: const LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [
-                                          Color(0xFF003865),
-                                          Color(0xFF0284C7),
-                                        ],
-                                      ),
+                                      gradient: AppTheme.primaryGradient,
                                       border: Border.all(
-                                        color: Colors.white,
-                                        width: 3,
+                                        color: Colors.white.withValues(alpha: 0.25),
+                                        width: 2,
                                       ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: const Color(0xFF003865)
-                                              .withValues(alpha: 0.35),
-                                          blurRadius: 14,
-                                          offset: const Offset(0, 5),
+                                          color: AppTheme.accentIndigo
+                                              .withValues(alpha: 0.45),
+                                          blurRadius: 20,
+                                          offset: const Offset(0, 6),
                                         ),
                                       ],
                                     ),
                                     child: const Center(
                                       child: FaIcon(
                                         FontAwesomeIcons.cubes,
-                                        size: 32,
+                                        size: 30,
                                         color: Colors.white,
                                       ),
                                     ),
@@ -262,15 +283,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 const SizedBox(height: 18),
 
-                                // Título institucional
+                                // Título institucional moderno
                                 Text(
                                   'Catálogo SENATI',
                                   textAlign: TextAlign.center,
                                   style: AppTheme.headingStyle(
-                                    fontSize: 22,
+                                    fontSize: 23,
                                     fontWeight: FontWeight.w800,
-                                    color: AppTheme.primaryBlue,
-                                    letterSpacing: -0.3,
+                                    color: Colors.white,
+                                    letterSpacing: -0.4,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -285,20 +306,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 const SizedBox(height: 22),
 
-                                // Cápsula informativa de credenciales demo
+                                // Cápsula interactiva de credenciales demo (Estilo Fintech)
                                 InkWell(
                                   onTap: _fillDemoCredentials,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(12),
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
+                                      horizontal: 14,
+                                      vertical: 10,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFF0F9FF),
-                                      borderRadius: BorderRadius.circular(10),
+                                      color: const Color(0xFF082F49).withValues(alpha: 0.45),
+                                      borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                        color: const Color(0xFFBAE6FD),
+                                        color: const Color(0xFF0284C7).withValues(alpha: 0.4),
                                         width: 1.2,
                                       ),
                                     ),
@@ -307,15 +328,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                         const FaIcon(
                                           FontAwesomeIcons.key,
                                           size: 13,
-                                          color: Color(0xFF0284C7),
+                                          color: Color(0xFF38BDF8),
                                         ),
-                                        const SizedBox(width: 8),
+                                        const SizedBox(width: 9),
                                         Expanded(
                                           child: Text(
                                             'Demo: admin / admin123  (Toca para autocompletar)',
                                             style: AppTheme.bodyStyle(
-                                              fontSize: 11.5,
-                                              color: const Color(0xFF0369A1),
+                                              fontSize: 12,
+                                              color: const Color(0xFF7DD3FC),
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),
@@ -330,14 +351,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (_errorMessage != null) ...[
                                   Container(
                                     padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 9,
+                                      horizontal: 14,
+                                      vertical: 10,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFFEF2F2),
-                                      borderRadius: BorderRadius.circular(8),
+                                      color: const Color(0xFF450A0A).withValues(alpha: 0.55),
+                                      borderRadius: BorderRadius.circular(10),
                                       border: Border.all(
-                                        color: const Color(0xFFFECACA),
+                                        color: const Color(0xFFF43F5E).withValues(alpha: 0.5),
                                         width: 1.2,
                                       ),
                                     ),
@@ -346,15 +367,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                         const FaIcon(
                                           FontAwesomeIcons.circleExclamation,
                                           size: 14,
-                                          color: Color(0xFFDC2626),
+                                          color: Color(0xFFFB7185),
                                         ),
-                                        const SizedBox(width: 8),
+                                        const SizedBox(width: 9),
                                         Expanded(
                                           child: Text(
                                             _errorMessage!,
                                             style: AppTheme.bodyStyle(
                                               fontSize: 12,
-                                              color: const Color(0xFFB91C1C),
+                                              color: const Color(0xFFFECDD3),
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -362,7 +383,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(height: 14),
+                                  const SizedBox(height: 16),
                                 ],
 
                                 // Campo 1: Usuario
@@ -371,24 +392,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   style: AppTheme.bodyStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
-                                    color: AppTheme.textPrimary,
+                                    color: Colors.white,
                                   ),
                                   decoration: InputDecoration(
                                     labelText: 'Usuario',
                                     hintText: 'admin',
                                     prefixIcon: const Padding(
-                                      padding: EdgeInsets.all(12),
+                                      padding: EdgeInsets.all(13),
                                       child: FaIcon(
                                         FontAwesomeIcons.userCheck,
-                                        size: 16,
-                                        color: AppTheme.secondaryBlue,
-                                      ),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppTheme.borderMedium,
-                                        width: 1.5,
+                                        size: 15,
+                                        color: AppTheme.accentIndigo,
                                       ),
                                     ),
                                   ),
@@ -409,17 +423,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   style: AppTheme.bodyStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
-                                    color: AppTheme.textPrimary,
+                                    color: Colors.white,
                                   ),
                                   decoration: InputDecoration(
                                     labelText: 'Contraseña',
                                     hintText: 'admin123',
                                     prefixIcon: const Padding(
-                                      padding: EdgeInsets.all(12),
+                                      padding: EdgeInsets.all(13),
                                       child: FaIcon(
                                         FontAwesomeIcons.lock,
-                                        size: 16,
-                                        color: AppTheme.secondaryBlue,
+                                        size: 15,
+                                        color: AppTheme.accentIndigo,
                                       ),
                                     ),
                                     suffixIcon: IconButton(
@@ -439,13 +453,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ? 'Mostrar contraseña'
                                           : 'Ocultar contraseña',
                                     ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppTheme.borderMedium,
-                                        width: 1.5,
-                                      ),
-                                    ),
                                   ),
                                   validator: (value) {
                                     if (value == null || value.trim().isEmpty) {
@@ -457,30 +464,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 const SizedBox(height: 24),
 
-                                // Botón de Inicio con Degradado Dinámico
+                                // Botón de Inicio con Degradado Electric Indigo
                                 Container(
-                                  height: 48,
+                                  height: 50,
                                   decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: [
-                                        Color(0xFF003865), // Azul SENATI
-                                        Color(0xFF005696),
-                                        Color(0xFF0284C7), // Cyan luminoso
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: AppTheme.primaryGradient,
+                                    borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
-                                      color: const Color(0xFF1E3A8A),
+                                      color: Colors.white.withValues(alpha: 0.2),
                                       width: 1.2,
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: const Color(0xFF003865)
-                                            .withValues(alpha: 0.3),
-                                        blurRadius: 10,
-                                        offset: const Offset(0, 4),
+                                        color: AppTheme.accentIndigo
+                                            .withValues(alpha: 0.4),
+                                        blurRadius: 18,
+                                        offset: const Offset(0, 5),
                                       ),
                                     ],
                                   ),
@@ -489,9 +488,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.transparent,
                                       shadowColor: Colors.transparent,
-                                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                                      padding: const EdgeInsets.symmetric(horizontal: 16),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
                                     ),
                                     child: _isLoading
@@ -512,18 +511,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 child: Text(
                                                   'Ingresar al Catálogo',
                                                   style: AppTheme.bodyStyle(
-                                                    fontSize: 14.5,
+                                                    fontSize: 15,
                                                     fontWeight: FontWeight.w800,
                                                     color: Colors.white,
-                                                    letterSpacing: 0.2,
+                                                    letterSpacing: 0.3,
                                                   ),
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
                                               const SizedBox(width: 8),
                                               const Icon(
-                                                Icons.arrow_forward,
-                                                size: 18,
+                                                Icons.arrow_forward_rounded,
+                                                size: 19,
                                                 color: Colors.white,
                                               ),
                                             ],

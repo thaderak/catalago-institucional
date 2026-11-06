@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/component_item.dart';
 import '../theme/app_theme.dart';
 
-/// Tarjeta dinámica y responsive optimizada para teléfonos y pantallas grandes
+/// Tarjeta dinámica y responsive optimizada con estética Obsidian Dark Tech
 class ComponentCard extends StatelessWidget {
   final ComponentItem component;
   final VoidCallback onTap;
@@ -28,23 +28,23 @@ class ComponentCard extends StatelessWidget {
         return await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            backgroundColor: Colors.white,
+            backgroundColor: const Color(0xFF111A2D),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
-              side: const BorderSide(color: AppTheme.borderMedium, width: 1.5),
+              borderRadius: BorderRadius.circular(18),
+              side: const BorderSide(color: AppTheme.borderMedium, width: 1.4),
             ),
             title: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFEE2E2),
+                    color: const Color(0xFF450A0A),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xFFFCA5A5)),
+                    border: Border.all(color: const Color(0xFFF43F5E).withValues(alpha: 0.5)),
                   ),
                   child: const FaIcon(
                     FontAwesomeIcons.trashCan,
-                    color: Color(0xFFDC2626),
+                    color: Color(0xFFFB7185),
                     size: 16,
                   ),
                 ),
@@ -55,6 +55,7 @@ class ComponentCard extends StatelessWidget {
                     style: AppTheme.headingStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w800,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -64,7 +65,7 @@ class ComponentCard extends StatelessWidget {
               '¿Desea eliminar "${component.name}" del catálogo?',
               style: AppTheme.bodyStyle(
                 fontSize: 14,
-                color: const Color(0xFF475569),
+                color: AppTheme.textSecondary,
               ),
             ),
             actions: [
@@ -80,9 +81,9 @@ class ComponentCard extends StatelessWidget {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFDC2626),
+                  backgroundColor: const Color(0xFFE11D48),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 onPressed: () => Navigator.of(ctx).pop(true),
@@ -102,8 +103,8 @@ class ComponentCard extends StatelessWidget {
       background: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
-          color: const Color(0xFFEF4444),
-          borderRadius: BorderRadius.circular(12),
+          color: const Color(0xFF991B1B),
+          borderRadius: BorderRadius.circular(16),
         ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -133,19 +134,19 @@ class ComponentCard extends StatelessWidget {
           vertical: 5,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppTheme.borderMedium, width: 1.4),
+          color: const Color(0xFF111A2D),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.borderMedium, width: 1.2),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
+              color: Colors.black.withValues(alpha: 0.25),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           child: Container(
             decoration: BoxDecoration(
               border: Border(
@@ -156,26 +157,33 @@ class ComponentCard extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: onTap,
-                splashColor: catColor.withValues(alpha: 0.08),
-                highlightColor: catColor.withValues(alpha: 0.04),
+                splashColor: catColor.withValues(alpha: 0.12),
+                highlightColor: catColor.withValues(alpha: 0.05),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: isMobile ? 10 : 14,
-                    vertical: isMobile ? 10 : 12,
+                    vertical: isMobile ? 10 : 13,
                   ),
                   child: Row(
                     children: [
-                      // Ícono dinámico FontAwesome responsive
+                      // Ícono dinámico FontAwesome con aura bioluminiscente
                       Container(
-                        width: isMobile ? 40 : 46,
-                        height: isMobile ? 40 : 46,
+                        width: isMobile ? 42 : 48,
+                        height: isMobile ? 42 : 48,
                         decoration: BoxDecoration(
-                          color: catColor.withValues(alpha: 0.1),
+                          color: catColor.withValues(alpha: 0.12),
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: catColor.withValues(alpha: 0.35),
                             width: 1.4,
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: catColor.withValues(alpha: 0.20),
+                              blurRadius: 10,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
                         child: Center(
                           child: FaIcon(
@@ -196,25 +204,25 @@ class ComponentCard extends StatelessWidget {
                             Text(
                               component.name,
                               style: AppTheme.headingStyle(
-                                fontSize: isMobile ? 14 : 15,
+                                fontSize: isMobile ? 14.5 : 15.5,
                                 fontWeight: FontWeight.w700,
-                                color: AppTheme.textPrimary,
+                                color: Colors.white,
                                 letterSpacing: -0.1,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: 5),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 7,
-                                vertical: 2,
+                                horizontal: 8,
+                                vertical: 2.5,
                               ),
                               decoration: BoxDecoration(
-                                color: catColor.withValues(alpha: 0.08),
+                                color: catColor.withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(6),
                                 border: Border.all(
-                                  color: catColor.withValues(alpha: 0.28),
+                                  color: catColor.withValues(alpha: 0.35),
                                   width: 1,
                                 ),
                               ),
@@ -234,10 +242,10 @@ class ComponentCard extends StatelessWidget {
 
                       const SizedBox(width: 8),
 
-                      // Cápsula de Precio con bordes verdes definidos
+                      // Cápsula de Precio Estilo Fintech (Neon Mint)
                       Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: isMobile ? 7 : 10,
+                          horizontal: isMobile ? 8 : 11,
                           vertical: isMobile ? 5 : 6,
                         ),
                         decoration: BoxDecoration(
@@ -248,13 +256,27 @@ class ComponentCard extends StatelessWidget {
                             width: 1.2,
                           ),
                         ),
-                        child: Text(
-                          component.formattedPrice,
-                          style: AppTheme.bodyStyle(
-                            fontSize: isMobile ? 12 : 13,
-                            fontWeight: FontWeight.w800,
-                            color: AppTheme.priceGreen,
-                          ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: const BoxDecoration(
+                                color: AppTheme.priceGreen,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              component.formattedPrice,
+                              style: AppTheme.bodyStyle(
+                                fontSize: isMobile ? 12 : 13,
+                                fontWeight: FontWeight.w800,
+                                color: AppTheme.priceGreen,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
 
@@ -265,24 +287,24 @@ class ComponentCard extends StatelessWidget {
                         message: 'Eliminar componente',
                         child: InkWell(
                           key: ValueKey('delete-${component.id}'),
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(8),
                           onTap: onDelete,
                           child: Container(
-                            width: isMobile ? 28 : 30,
-                            height: isMobile ? 28 : 30,
+                            width: isMobile ? 28 : 32,
+                            height: isMobile ? 28 : 32,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFFEF2F2),
-                              borderRadius: BorderRadius.circular(6),
+                              color: const Color(0xFF450A0A).withValues(alpha: 0.4),
+                              borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: const Color(0xFFFECACA),
+                                color: const Color(0xFFF43F5E).withValues(alpha: 0.35),
                                 width: 1,
                               ),
                             ),
                             child: const Center(
                               child: FaIcon(
                                 FontAwesomeIcons.trashCan,
-                                color: Color(0xFFDC2626),
-                                size: 13,
+                                color: Color(0xFFFB7185),
+                                size: 12,
                               ),
                             ),
                           ),
@@ -296,7 +318,7 @@ class ComponentCard extends StatelessWidget {
                         width: isMobile ? 22 : 26,
                         height: isMobile ? 22 : 26,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF8FAFC),
+                          color: const Color(0xFF1E293B),
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
                             color: AppTheme.borderSubtle,

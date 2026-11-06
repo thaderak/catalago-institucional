@@ -8,17 +8,15 @@ import '../widgets/component_card.dart';
 import '../widgets/filter_chip_bar.dart';
 
 /// ============================================================================
-/// PANTALLA PRINCIPAL: Catálogo SENATI (Ruta SPA: /#/home)
+/// PANTALLA PRINCIPAL: HomeScreen (Catálogo Tecnológico SENATI)
 /// ============================================================================
-/// Esta clase representa la vista principal de la aplicación SPA.
-/// Gestiona la persistencia temporal de los componentes en memoria, el filtrado
-/// en tiempo real por categorías, la búsqueda dinámica de texto, la adición de
-/// nuevos registros mediante modal y la eliminación reactiva de productos.
+/// Presenta el catálogo de componentes en interfaz Obsidian Dark Tech vanguardista:
+/// - Filtrado reactivo en tiempo real por categoría y texto.
+/// - Inserción y eliminación reactiva de componentes.
+/// - Diseño responsive para pantallas móviles y de escritorio.
+/// - Cierre de sesión seguro con retorno al Login.
 class HomeScreen extends StatefulWidget {
-  /// Nombre de ruta estándar para navegación interna
   static const String routeName = '/home';
-
-  /// Nombre de ruta en formato hash para compatibilidad Single Page Application (SPA Web)
   static const String hashRouteName = '/#/home';
 
   const HomeScreen({super.key});
@@ -28,40 +26,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // ===========================================================================
-  // VARIABLES DE ESTADO LOCAL (GESTIÓN DE COLECCIONES REACTIVAS)
-  // ===========================================================================
-
-  /// Lista maestra en memoria que almacena los componentes tecnológicos registrados.
-  /// Mantiene la persistencia temporal durante la sesión del usuario.
+  // Lista mutable de componentes tecnológicos cargada en memoria
   late List<ComponentItem> _allComponents;
 
-  /// Categoría seleccionada actualmente para filtrar la lista ('Todos', 'Hardware', etc.).
+  // Estado del filtro de categoría seleccionado
   String _selectedCategory = 'Todos';
 
-  /// Término de búsqueda en texto plano ingresado por el usuario.
-  String _searchQuery = '';
-
-  /// Bandera booleana que indica si el campo de búsqueda en la AppBar está activo.
+  // Estados y controladores para el motor de búsqueda en tiempo real
   bool _isSearching = false;
-
-  /// Controlador para gestionar y limpiar el texto del campo de búsqueda en tiempo real.
   final TextEditingController _searchController = TextEditingController();
-
-  // ===========================================================================
-  // CICLO DE VIDA DEL WIDGET (LIFECYCLE)
-  // ===========================================================================
+  String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
-    // Inicialización del estado: clonamos la lista inicial precargada del taller
     _allComponents = List.from(initialComponents);
   }
 
   @override
   void dispose() {
-    // Liberación de recursos del controlador de texto para evitar fugas de memoria
     _searchController.dispose();
     super.dispose();
   }
@@ -70,8 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
   // GETTERS COMPUTADOS (LÓGICA DE NEGOCIO Y FILTRADO)
   // ===========================================================================
 
-  /// Calcula dinámicamente la cantidad de productos por categoría.
-  /// Retorna un mapa con clave [nombreCategoría] y valor [conteo].
   Map<String, int> get _categoryCounts {
     final Map<String, int> counts = {'Todos': _allComponents.length};
     for (final item in _allComponents) {
@@ -80,23 +61,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return counts;
   }
 
-  /// Filtra la colección de componentes en tiempo real evaluando:
-  /// 1. Coincidencia de categoría seleccionada mediante List.where().
-  /// 2. Coincidencia de la consulta de búsqueda en nombre, descripción o categoría.
   List<ComponentItem> get _filteredComponents {
     return _allComponents.where((item) {
-      // Regla 1: Si es 'Todos', no filtra por categoría; caso contrario compara sin distinguir mayúsculas
       final matchesCategory = _selectedCategory == 'Todos' ||
           item.category.toLowerCase() == _selectedCategory.toLowerCase();
 
-      // Regla 2: Comprobación de texto ingresado en el buscador
       final query = _searchQuery.trim().toLowerCase();
       final matchesSearch = query.isEmpty ||
           item.name.toLowerCase().contains(query) ||
           item.description.toLowerCase().contains(query) ||
           item.category.toLowerCase().contains(query);
 
-      // El elemento debe cumplir ambos criterios simultáneamente
       return matchesCategory && matchesSearch;
     }).toList();
   }
@@ -105,37 +80,33 @@ class _HomeScreenState extends State<HomeScreen> {
   // MÉTODOS DE MANIPULACIÓN DEL ESTADO (CRUD Y ACCIONES)
   // ===========================================================================
 
-  /// Inserta un nuevo componente tecnológico al inicio de la colección.
-  /// Notifica a la interfaz gráfica mediante setState() para forzar un re-render reactivo.
   void _addNewComponent(ComponentItem newComponent) {
     setState(() {
       _allComponents.insert(0, newComponent);
     });
   }
 
-  /// Muestra un diálogo de confirmación para eliminar un componente.
-  /// Si el usuario confirma, invoca la eliminación real [_executeDelete].
   void _deleteComponent(ComponentItem component) {
     showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFF111A2D),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-          side: const BorderSide(color: AppTheme.borderMedium, width: 1.5),
+          borderRadius: BorderRadius.circular(18),
+          side: const BorderSide(color: AppTheme.borderMedium, width: 1.4),
         ),
         title: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFFFEE2E2),
+                color: const Color(0xFF450A0A),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFFFCA5A5)),
+                border: Border.all(color: const Color(0xFFF43F5E).withValues(alpha: 0.5)),
               ),
               child: const FaIcon(
                 FontAwesomeIcons.trashCan,
-                color: Color(0xFFDC2626),
+                color: Color(0xFFFB7185),
                 size: 16,
               ),
             ),
@@ -146,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: AppTheme.headingStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w800,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -155,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
           '¿Está seguro de eliminar "${component.name}" del catálogo institucional?',
           style: AppTheme.bodyStyle(
             fontSize: 14,
-            color: const Color(0xFF475569),
+            color: AppTheme.textSecondary,
           ),
         ),
         actions: [
@@ -171,9 +143,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFDC2626),
+              backgroundColor: const Color(0xFFE11D48),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             onPressed: () => Navigator.of(ctx).pop(true),
@@ -194,13 +166,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  /// Ejecuta la eliminación en la lista maestra y despliega un SnackBar
-  /// interactivo con acción de reversión (DESHACER / Undo).
   void _executeDelete(ComponentItem component) {
     final index = _allComponents.indexWhere((c) => c.id == component.id);
     if (index == -1) return;
 
-    // Actualizamos el estado removiendo el elemento de la colección en memoria
     setState(() {
       _allComponents.removeAt(index);
     });
@@ -212,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const FaIcon(
               FontAwesomeIcons.trashCan,
-              color: Colors.white,
+              color: Color(0xFFFB7185),
               size: 15,
             ),
             const SizedBox(width: 10),
@@ -227,16 +196,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        backgroundColor: const Color(0xFFDC2626),
+        backgroundColor: const Color(0xFF1E1118),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: const BorderSide(color: Color(0xFF991B1B), width: 1.2),
+          borderRadius: BorderRadius.circular(12),
+          side: const BorderSide(color: Color(0xFFE11D48), width: 1.2),
         ),
-        // Opción reactiva de restauración temporal (Patrón Memento / Undo)
         action: SnackBarAction(
           label: 'DESHACER',
-          textColor: Colors.yellowAccent,
+          textColor: const Color(0xFF38BDF8),
           onPressed: () {
             setState(() {
               _allComponents.insert(index, component);
@@ -248,8 +216,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Abre una ventana modal inferior (BottomSheet) para listar y eliminar
-  /// periféricos de forma específica, cumpliendo el requerimiento solicitado.
   void _showDeletePeripheralDialog() {
     showModalBottomSheet(
       context: context,
@@ -257,7 +223,6 @@ class _HomeScreenState extends State<HomeScreen> {
       isScrollControlled: true,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setModalState) {
-          // Filtrado en tiempo real de solo los periféricos disponibles
           final currentPeripherals = _allComponents
               .where((c) =>
                   c.category.toLowerCase() == 'periféricos' ||
@@ -266,10 +231,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
           return Container(
             decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              color: Color(0xFF111A2D),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
               border: Border(
-                top: BorderSide(color: AppTheme.borderMedium, width: 2),
+                top: BorderSide(color: AppTheme.borderMedium, width: 1.4),
               ),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -278,14 +243,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Tirador táctil visual superior
                   Center(
                     child: Container(
                       width: 44,
                       height: 4,
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFCBD5E1),
+                        color: const Color(0xFF334155),
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
@@ -295,13 +259,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         padding: const EdgeInsets.all(7),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFEF2F2),
+                          color: const Color(0xFF450A0A),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: const Color(0xFFFECACA)),
+                          border: Border.all(
+                            color: const Color(0xFFF43F5E).withValues(alpha: 0.4),
+                          ),
                         ),
                         child: const FaIcon(
                           FontAwesomeIcons.trashCan,
-                          color: Color(0xFFDC2626),
+                          color: Color(0xFFFB7185),
                           size: 15,
                         ),
                       ),
@@ -311,11 +277,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: AppTheme.headingStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
+                          color: Colors.white,
                         ),
                       ),
                       const Spacer(),
                       IconButton(
-                        icon: const Icon(Icons.close, size: 20),
+                        icon: const Icon(Icons.close, size: 20, color: AppTheme.textSecondary),
                         onPressed: () => Navigator.of(ctx).pop(),
                       ),
                     ],
@@ -330,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             const FaIcon(
                               FontAwesomeIcons.circleInfo,
-                              color: Color(0xFF94A3B8),
+                              color: Color(0xFF64748B),
                               size: 32,
                             ),
                             const SizedBox(height: 10),
@@ -364,9 +331,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           final item = currentPeripherals[index];
                           return Container(
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF8FAFC),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppTheme.borderMedium),
+                              color: const Color(0xFF162238),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: AppTheme.borderSubtle),
                             ),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
@@ -375,12 +342,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Row(
                               children: [
                                 Container(
-                                  width: 36,
-                                  height: 36,
+                                  width: 38,
+                                  height: 38,
                                   decoration: BoxDecoration(
                                     color: AppTheme.getCategoryColor(item.category)
-                                        .withValues(alpha: 0.1),
+                                        .withValues(alpha: 0.15),
                                     shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: AppTheme.getCategoryColor(item.category)
+                                          .withValues(alpha: 0.4),
+                                    ),
                                   ),
                                   child: Center(
                                     child: FaIcon(
@@ -400,6 +371,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         style: AppTheme.headingStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w700,
+                                          color: Colors.white,
                                         ),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
@@ -408,7 +380,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         item.formattedPrice,
                                         style: AppTheme.bodyStyle(
                                           fontSize: 12,
-                                          fontWeight: FontWeight.w700,
+                                          fontWeight: FontWeight.w800,
                                           color: AppTheme.priceGreen,
                                         ),
                                       ),
@@ -418,13 +390,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 IconButton(
                                   icon: const FaIcon(
                                     FontAwesomeIcons.trashCan,
-                                    color: Color(0xFFDC2626),
-                                    size: 16,
+                                    color: Color(0xFFFB7185),
+                                    size: 15,
                                   ),
-                                  tooltip: 'Eliminar ${item.name}',
+                                  tooltip: 'Eliminar este periférico',
                                   onPressed: () {
-                                    Navigator.of(ctx).pop();
-                                    _deleteComponent(item);
+                                    _executeDelete(item);
+                                    setModalState(() {});
+                                    setState(() {});
+                                    if (currentPeripherals.length <= 1) {
+                                      Navigator.of(ctx).pop();
+                                    }
                                   },
                                 ),
                               ],
@@ -434,7 +410,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ],
-                  const SizedBox(height: 12),
                 ],
               ),
             ),
@@ -444,42 +419,27 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Navegación a la pantalla de detalle pasando el componente como argumento.
-  /// Si la pantalla de detalle retorna el valor 'delete', se remueve el componente.
-  void _navigateToDetails(ComponentItem component) async {
-    final result = await Navigator.pushNamed(
-      context,
-      '/details',
-      arguments: component,
-    );
-
-    if (result == 'delete') {
-      _executeDelete(component);
-    }
-  }
-
-  /// Muestra diálogo de confirmación para cerrar sesión y volver a LoginScreen
   void _confirmLogout() {
     showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFF111A2D),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-          side: const BorderSide(color: AppTheme.borderMedium, width: 1.5),
+          borderRadius: BorderRadius.circular(18),
+          side: const BorderSide(color: AppTheme.borderMedium, width: 1.4),
         ),
         title: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFFEFF6FF),
+                color: const Color(0xFF0F172A),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFFBFDBFE)),
+                border: Border.all(color: AppTheme.accentIndigo.withValues(alpha: 0.4)),
               ),
               child: const FaIcon(
                 FontAwesomeIcons.arrowRightFromBracket,
-                color: Color(0xFF0284C7),
+                color: AppTheme.accentIndigo,
                 size: 16,
               ),
             ),
@@ -488,9 +448,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 'Cerrar Sesión',
                 style: AppTheme.headingStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppTheme.primaryBlue,
+                  fontSize: 16.5,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -499,8 +459,8 @@ class _HomeScreenState extends State<HomeScreen> {
         content: Text(
           '¿Desea cerrar la sesión de usuario y regresar a la pantalla de acceso?',
           style: AppTheme.bodyStyle(
-            fontSize: 13,
-            color: AppTheme.textPrimary,
+            fontSize: 13.5,
+            color: AppTheme.textSecondary,
           ),
         ),
         actions: [
@@ -517,9 +477,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryBlue,
+              backgroundColor: AppTheme.accentIndigo,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             child: Text(
@@ -539,6 +499,18 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _navigateToDetails(ComponentItem component) async {
+    final result = await Navigator.pushNamed(
+      context,
+      '/details',
+      arguments: component,
+    );
+
+    if (result == 'delete') {
+      _executeDelete(component);
+    }
+  }
+
   // ===========================================================================
   // CONSTRUCCIÓN VISUAL DEL WIDGET (BUILD METHOD)
   // ===========================================================================
@@ -552,34 +524,43 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppTheme.scaffoldBg,
       // -----------------------------------------------------------------------
-      // APPBAR: Barra superior corporativa SENATI con buscador interactivo
+      // APPBAR: Barra superior Obsidian con buscador interactivo
       // -----------------------------------------------------------------------
       appBar: AppBar(
+        backgroundColor: AppTheme.surfaceDark,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            color: AppTheme.borderSubtle,
+            height: 1,
+          ),
+        ),
         title: _isSearching
             ? Container(
-                height: 40,
+                height: 42,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(8),
+                  color: const Color(0xFF162238),
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.35),
+                    color: AppTheme.accentIndigo.withValues(alpha: 0.5),
                     width: 1.2,
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: TextField(
                   controller: _searchController,
                   autofocus: true,
                   style: AppTheme.bodyStyle(
                     color: Colors.white,
                     fontSize: 13.5,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                   ),
-                  cursorColor: Colors.white,
+                  cursorColor: AppTheme.accentCyan,
                   decoration: InputDecoration(
-                    hintText: 'Buscar componente...',
+                    hintText: 'Buscar en catálogo TI...',
                     hintStyle: AppTheme.bodyStyle(
-                      color: Colors.white70,
+                      color: AppTheme.textMuted,
                       fontSize: 13,
                     ),
                     border: InputBorder.none,
@@ -599,14 +580,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(7),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.3),
-                        width: 1,
-                      ),
+                      gradient: AppTheme.primaryGradient,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.accentIndigo.withValues(alpha: 0.35),
+                          blurRadius: 10,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: const FaIcon(
                       FontAwesomeIcons.cubes,
@@ -614,7 +598,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 9),
                   Flexible(
                     child: Text(
                       'Catálogo SENATI',
@@ -622,7 +606,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: isMobile ? 18 : 20,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
-                        letterSpacing: -0.2,
+                        letterSpacing: -0.3,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -631,7 +615,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
         actions: [
           IconButton(
-            icon: Icon(_isSearching ? Icons.close : Icons.search, size: 22),
+            icon: Icon(
+              _isSearching ? Icons.close : Icons.search_rounded,
+              size: 22,
+              color: AppTheme.textPrimary,
+            ),
             tooltip: _isSearching ? 'Cerrar búsqueda' : 'Buscar componente',
             onPressed: () {
               setState(() {
@@ -648,8 +636,8 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const FaIcon(
               FontAwesomeIcons.arrowRightFromBracket,
-              size: 17,
-              color: Colors.white,
+              size: 16,
+              color: AppTheme.textSecondary,
             ),
             tooltip: 'Cerrar sesión',
             onPressed: _confirmLogout,
@@ -662,11 +650,11 @@ class _HomeScreenState extends State<HomeScreen> {
       // -----------------------------------------------------------------------
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 860),
+          constraints: const BoxConstraints(maxWidth: 880),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Texto institucional de instrucción pedagógica
+              // Texto pedagógico moderno
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.only(
@@ -678,9 +666,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   'Seleccione una categoría o toque un componente para ver su ficha técnica:',
                   style: AppTheme.bodyStyle(
-                    fontSize: isMobile ? 12 : 13,
+                    fontSize: isMobile ? 12 : 12.5,
                     color: AppTheme.textSecondary,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -703,39 +691,48 @@ class _HomeScreenState extends State<HomeScreen> {
                   vertical: 4,
                 ),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xFF111A2D),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: AppTheme.borderSubtle, width: 1.2),
                   ),
                   child: Row(
                     children: [
-                      // Indicador de cantidad de resultados actuales
+                      // Indicador de cantidad de resultados actuales con punto verde
+                      Container(
+                        width: 7,
+                        height: 7,
+                        decoration: const BoxDecoration(
+                          color: AppTheme.accentCyan,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 7),
                       Text(
                         '${filteredList.length} producto(s)',
                         style: AppTheme.bodyStyle(
-                          fontSize: isMobile ? 11.5 : 12,
-                          color: AppTheme.textPrimary,
+                          fontSize: isMobile ? 11.5 : 12.5,
+                          color: Colors.white,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       const Spacer(),
 
-                      // Botón funcional: Eliminar Periférico
+                      // Botón funcional: Eliminar Periférico (Aesthetic Danger Pill)
                       InkWell(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(8),
                         onTap: _showDeletePeripheralDialog,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 3.5,
+                            horizontal: 9,
+                            vertical: 4.5,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFEF2F2),
-                            borderRadius: BorderRadius.circular(6),
+                            color: const Color(0xFF450A0A).withValues(alpha: 0.45),
+                            borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: const Color(0xFFFCA5A5),
+                              color: const Color(0xFFF43F5E).withValues(alpha: 0.4),
                               width: 1,
                             ),
                           ),
@@ -745,14 +742,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               const FaIcon(
                                 FontAwesomeIcons.trashCan,
                                 size: 11,
-                                color: Color(0xFFDC2626),
+                                color: Color(0xFFFB7185),
                               ),
-                              const SizedBox(width: 5),
+                              const SizedBox(width: 6),
                               Text(
                                 isMobile ? 'Eliminar' : 'Eliminar periférico',
                                 style: AppTheme.bodyStyle(
                                   fontSize: 11,
-                                  color: const Color(0xFFDC2626),
+                                  color: const Color(0xFFFB7185),
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
@@ -775,19 +772,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 3.5,
+                              horizontal: 9,
+                              vertical: 4.5,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF1F5F9),
-                              borderRadius: BorderRadius.circular(6),
+                              color: const Color(0xFF1E293B),
+                              borderRadius: BorderRadius.circular(8),
                               border: Border.all(color: AppTheme.borderSubtle),
                             ),
                             child: Text(
                               'Limpiar filtros',
                               style: AppTheme.bodyStyle(
                                 fontSize: 11,
-                                color: AppTheme.accentBlue,
+                                color: AppTheme.accentCyan,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -799,45 +796,45 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              // Lista Dinámica de Componentes renderizada mediante ListView.builder
+              // Lista Dinámica de Componentes
               Expanded(
                 child: filteredList.isEmpty
                     ? Center(
                         child: SingleChildScrollView(
                           padding: const EdgeInsets.all(20),
                           child: Container(
-                            padding: EdgeInsets.all(isMobile ? 18 : 24),
+                            padding: EdgeInsets.all(isMobile ? 20 : 28),
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: AppTheme.borderMedium, width: 1.5),
+                              color: const Color(0xFF111A2D),
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(color: AppTheme.borderMedium, width: 1.2),
                             ),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Container(
-                                  width: 58,
-                                  height: 58,
+                                  width: 62,
+                                  height: 62,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFF1F5F9),
+                                    color: const Color(0xFF182238),
                                     shape: BoxShape.circle,
-                                    border: Border.all(color: AppTheme.borderSubtle, width: 1.5),
+                                    border: Border.all(color: AppTheme.borderMedium, width: 1.4),
                                   ),
                                   child: const Center(
                                     child: FaIcon(
                                       FontAwesomeIcons.magnifyingGlass,
                                       size: 24,
-                                      color: Color(0xFF94A3B8),
+                                      color: AppTheme.accentIndigo,
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 14),
+                                const SizedBox(height: 16),
                                 Text(
                                   'No se encontraron componentes',
                                   style: AppTheme.headingStyle(
-                                    fontSize: 16,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.w800,
-                                    color: AppTheme.textPrimary,
+                                    color: Colors.white,
                                   ),
                                 ),
                                 const SizedBox(height: 6),
@@ -847,32 +844,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                       : 'No hay elementos registrados en la categoría "$_selectedCategory"',
                                   textAlign: TextAlign.center,
                                   style: AppTheme.bodyStyle(
-                                    fontSize: 12.5,
+                                    fontSize: 13,
                                     color: AppTheme.textSecondary,
                                   ),
                                 ),
-                                const SizedBox(height: 16),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppTheme.primaryBlue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      side: const BorderSide(color: Color(0xFF1E3A8A), width: 1.2),
-                                    ),
+                                const SizedBox(height: 18),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    gradient: AppTheme.primaryGradient,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _selectedCategory = 'Todos';
-                                      _searchQuery = '';
-                                      _searchController.clear();
-                                      _isSearching = false;
-                                    });
-                                  },
-                                  child: Text(
-                                    'Ver todos los componentes',
-                                    style: AppTheme.bodyStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      shadowColor: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _selectedCategory = 'Todos';
+                                        _searchQuery = '';
+                                        _searchController.clear();
+                                        _isSearching = false;
+                                      });
+                                    },
+                                    child: Text(
+                                      'Ver todos los componentes',
+                                      style: AppTheme.bodyStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -900,22 +903,23 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       // -----------------------------------------------------------------------
-      // FLOATING ACTION BUTTON: Botón flotante para invocar el formulario modal
+      // FLOATING ACTION BUTTON: Botón flotante con Degradado Electric Indigo
       // -----------------------------------------------------------------------
       floatingActionButton: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: const Color(0xFF1E3A8A), width: 1.6),
+          gradient: AppTheme.primaryGradient,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.25), width: 1.2),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.primaryBlue.withValues(alpha: 0.28),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: AppTheme.accentIndigo.withValues(alpha: 0.45),
+              blurRadius: 18,
+              offset: const Offset(0, 5),
             ),
           ],
         ),
         child: FloatingActionButton.extended(
-          backgroundColor: AppTheme.primaryBlue,
+          backgroundColor: Colors.transparent,
           elevation: 0,
           highlightElevation: 0,
           icon: const FaIcon(
@@ -933,7 +937,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           onPressed: () {
-            // Despliegue asíncrono del formulario modal
             AddComponentModal.show(
               context,
               onComponentAdded: _addNewComponent,

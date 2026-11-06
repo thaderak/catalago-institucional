@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../data/initial_components.dart';
 import '../theme/app_theme.dart';
 
-/// Barra horizontal de FilterChips interactivos con bordes estilizados y tipografía moderna
+/// Barra horizontal de FilterChips interactivos con estética Obsidian y Cyber Glow
 class FilterChipBar extends StatelessWidget {
   final String selectedCategory;
   final ValueChanged<String> onSelected;
@@ -34,15 +34,14 @@ class FilterChipBar extends StatelessWidget {
           return FilterChip(
             selected: isSelected,
             showCheckmark: false,
-            backgroundColor: Colors.white,
-            selectedColor: AppTheme.primaryBlue,
+            backgroundColor: const Color(0xFF111A2D),
+            selectedColor: AppTheme.accentIndigo,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-            // Borde nítido acentuado en el FilterChip
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
               side: BorderSide(
-                color: isSelected ? AppTheme.primaryBlue : AppTheme.borderMedium,
-                width: 1.5,
+                color: isSelected ? AppTheme.accentIndigo : AppTheme.borderMedium,
+                width: isSelected ? 1.5 : 1.2,
               ),
             ),
             avatar: category != 'Todos'
@@ -52,6 +51,14 @@ class FilterChipBar extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: isSelected ? Colors.white : catColor,
                       shape: BoxShape.circle,
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: Colors.white.withValues(alpha: 0.6),
+                                blurRadius: 4,
+                              ),
+                            ]
+                          : null,
                     ),
                   )
                 : null,
@@ -61,7 +68,7 @@ class FilterChipBar extends StatelessWidget {
                 Text(
                   category,
                   style: AppTheme.bodyStyle(
-                    color: isSelected ? Colors.white : AppTheme.textPrimary,
+                    color: isSelected ? Colors.white : AppTheme.textSecondary,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
                     fontSize: 13,
                     letterSpacing: 0.1,
@@ -74,7 +81,7 @@ class FilterChipBar extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: isSelected
                           ? Colors.white.withValues(alpha: 0.22)
-                          : const Color(0xFFF1F5F9),
+                          : const Color(0xFF1E293B),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: isSelected

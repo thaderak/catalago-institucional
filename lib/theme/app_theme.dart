@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
-/// Configuración de Tema Vanguardista y Profesional para Catálogo SENATI
-/// Integra fuentes modernas (Outfit y Plus Jakarta Sans) y diseño enfocado en bordes definidos
+/// ============================================================================
+/// SISTEMA DE DISEÑO VANGUARDISTA: AppTheme (Modern Obsidian & Cyber Glow)
+/// ============================================================================
+/// Inspirado en las interfaces de software más estéticas y modernas del mundo
+/// (Linear, Vercel, Raycast, Stripe y Supabase).
+/// Implementa superficies obsidian oscuras, bordes micro-definidos con reflejo,
+/// gradientes vibrantes (Electric Indigo, Cyan, Cyber Violet y Mint)
+/// y tipografía de máxima legibilidad (Outfit & Plus Jakarta Sans).
 class AppTheme {
   // Fuentes del Sistema y Web
   static const String fontHeading = 'Outfit';
@@ -14,46 +20,102 @@ class AppTheme {
     'sans-serif',
   ];
 
-  // Paleta de Colores Corporativa
-  static const Color primaryBlue = Color(0xFF0A2540);
-  static const Color secondaryBlue = Color(0xFF005696);
-  static const Color accentBlue = Color(0xFF0284C7);
-  static const Color darkNavy = Color(0xFF071927);
+  // ---------------------------------------------------------------------------
+  // PALETA DE SUPERFICIES Y FONDOS (Obsidian & Deep Space Slate)
+  // ---------------------------------------------------------------------------
+  static const Color scaffoldBg = Color(0xFF090D16); // Fondo profundo obsidian
+  static const Color surfaceDark = Color(0xFF0D1424); // Superficie de barras y modales
+  static const Color cardBg = Color(0xFF121B2E); // Tarjetas obsidian principales
+  static const Color cardElevated = Color(0xFF17233B); // Tarjetas en hover/elevadas
+  static const Color inputBg = Color(0xFF0A101D); // Fondo de campos de texto
 
-  // Colores para Bordes Marcados y Definidos
-  static const Color borderSubtle = Color(0xFFE2E8F0);
-  static const Color borderMedium = Color(0xFFCBD5E1);
-  static const Color borderStrong = Color(0xFF94A3B8);
-  static const Color borderAccent = Color(0xFF0284C7);
+  // ---------------------------------------------------------------------------
+  // COLORES DE ACENTO VIBRANTES (Aesthetic Modern Palette)
+  // ---------------------------------------------------------------------------
+  static const Color accentIndigo = Color(0xFF6366F1); // Indigo eléctrico moderno
+  static const Color accentViolet = Color(0xFF8B5CF6); // Violeta cibernético
+  static const Color accentCyan = Color(0xFF06B6D4); // Cyan radiante
+  static const Color accentSky = Color(0xFF38BDF8); // Azul cielo brillante
+  static const Color accentMint = Color(0xFF10B981); // Verde menta / esmeralda
+  static const Color accentRose = Color(0xFFF43F5E); // Rosa / Carmesí moderno
+  static const Color accentAmber = Color(0xFFF59E0B); // Ámbar cálido
 
-  // Colores de Estados y Precios
-  static const Color priceGreen = Color(0xFF15803D);
-  static const Color priceBadgeBg = Color(0xFFECFDF5);
-  static const Color priceBadgeBorder = Color(0xFFA7F3D0);
+  // Gradientes corporativos estéticos
+  static const LinearGradient primaryGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color(0xFF6366F1), // Electric Indigo
+      Color(0xFF8B5CF6), // Cyber Violet
+    ],
+  );
 
-  static const Color greenBoxBg = Color(0xFFF0FDF4);
-  static const Color greenBoxBorder = Color(0xFF86EFAC);
-  static const Color greenTextDark = Color(0xFF166534);
+  static const LinearGradient cyanGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color(0xFF06B6D4), // Cyan
+      Color(0xFF3B82F6), // Blue
+    ],
+  );
 
-  // Fondos y Superficies
-  static const Color scaffoldBg = Color(0xFFF8FAFC);
-  static const Color cardBg = Colors.white;
-  static const Color textPrimary = Color(0xFF0F172A);
-  static const Color textSecondary = Color(0xFF64748B);
+  static const LinearGradient backgroundMeshGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color(0xFF060911),
+      Color(0xFF0B101D),
+      Color(0xFF0E172A),
+      Color(0xFF0A1122),
+    ],
+    stops: [0.0, 0.35, 0.70, 1.0],
+  );
 
-  /// Retorna un color distintivo para el borde y tag según la categoría
+  // ---------------------------------------------------------------------------
+  // BORDES MICRO-DEFINIDOS Y REFLEJOS (Micro-borders)
+  // ---------------------------------------------------------------------------
+  static const Color borderSubtle = Color(0xFF1E293B); // Borde sutil casi invisible
+  static const Color borderMedium = Color(0xFF26354D); // Borde estándar de tarjetas
+  static const Color borderStrong = Color(0xFF3B4F73); // Borde de inputs activos
+  static const Color borderAccent = Color(0xFF6366F1); // Borde de enfoque índigo
+
+  // ---------------------------------------------------------------------------
+  // ESTADOS, PRECIOS Y STOCK (Fintech & Neon Mint)
+  // ---------------------------------------------------------------------------
+  static const Color priceGreen = Color(0xFF34D399); // Verde menta neón brillante
+  static const Color priceBadgeBg = Color(0xFF062E25); // Superficie esmeralda profunda
+  static const Color priceBadgeBorder = Color(0xFF059669); // Borde verde esmeralda
+
+  static const Color greenBoxBg = Color(0xFF082720);
+  static const Color greenBoxBorder = Color(0xFF0D5E4D);
+  static const Color greenTextDark = Color(0xFF6EE7B7);
+
+  // ---------------------------------------------------------------------------
+  // COLORES DE TEXTO (Alta Jerarquía y Contraste)
+  // ---------------------------------------------------------------------------
+  static const Color textPrimary = Color(0xFFF8FAFC); // Blanco hielo puro
+  static const Color textSecondary = Color(0xFF94A3B8); // Pizarra fresca / gris moderno
+  static const Color textMuted = Color(0xFF64748B); // Gris atenuado
+
+  // Alias retrocompatibles para no romper referencias existentes
+  static const Color primaryBlue = Color(0xFF121B2E);
+  static const Color secondaryBlue = Color(0xFF6366F1);
+
+  // ---------------------------------------------------------------------------
+  // COLORES DINÁMICOS POR CATEGORÍA TECNOLÓGICA (Aesthetic Neon Tones)
+  // ---------------------------------------------------------------------------
   static Color getCategoryColor(String category) {
     switch (category.trim()) {
       case 'Hardware':
-        return const Color(0xFF2563EB); // Azul real
+        return const Color(0xFF38BDF8); // Electric Sky Blue
       case 'Procesadores':
-        return const Color(0xFF7C3AED); // Púrpura vibrante
+        return const Color(0xFFA855F7); // Cyber Purple / Neon Violet
       case 'Almacenamiento':
-        return const Color(0xFF0891B2); // Cyan profundo
+        return const Color(0xFF06B6D4); // Radiant Cyan
       case 'Periféricos':
-        return const Color(0xFF059669); // Esmeralda
+        return const Color(0xFF10B981); // Emerald Mint
       default:
-        return const Color(0xFF475569); // Pizarra
+        return const Color(0xFF818CF8); // Indigo pastel
     }
   }
 
@@ -93,12 +155,23 @@ class AppTheme {
     );
   }
 
-  static ThemeData get lightTheme {
+  /// Tema Principal Global de la Aplicación
+  static ThemeData get lightTheme => modernTheme;
+
+  static ThemeData get modernTheme {
     return ThemeData(
       useMaterial3: true,
+      brightness: Brightness.dark,
       scaffoldBackgroundColor: scaffoldBg,
       fontFamily: fontBody,
       fontFamilyFallback: fontFallbacks,
+      colorScheme: ColorScheme.dark(
+        primary: accentIndigo,
+        secondary: accentViolet,
+        surface: cardBg,
+        onSurface: textPrimary,
+        error: accentRose,
+      ),
       textTheme: TextTheme(
         displayLarge: headingStyle(
           fontSize: 32,
@@ -134,46 +207,46 @@ class AppTheme {
         ),
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: primaryBlue,
-        foregroundColor: Colors.white,
+        backgroundColor: surfaceDark,
+        foregroundColor: textPrimary,
         elevation: 0,
         centerTitle: false,
         titleTextStyle: headingStyle(
-          color: Colors.white,
-          fontSize: 20,
+          color: textPrimary,
+          fontSize: 19,
           fontWeight: FontWeight.w800,
-          letterSpacing: 0.2,
+          letterSpacing: -0.2,
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: textPrimary),
       ),
       cardTheme: CardThemeData(
         color: cardBg,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-          side: const BorderSide(color: borderMedium, width: 1.5),
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: borderMedium, width: 1.2),
         ),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: inputBg,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: borderMedium, width: 1.5),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: borderMedium, width: 1.2),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: borderMedium, width: 1.5),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: borderMedium, width: 1.2),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: accentBlue, width: 2),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: accentIndigo, width: 1.8),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFDC2626), width: 1.5),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: accentRose, width: 1.4),
         ),
         labelStyle: bodyStyle(
           color: textSecondary,
@@ -181,25 +254,31 @@ class AppTheme {
           fontWeight: FontWeight.w500,
         ),
         hintStyle: bodyStyle(
-          color: const Color(0xFF94A3B8),
+          color: textMuted,
           fontSize: 13,
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryBlue,
+          backgroundColor: accentIndigo,
           foregroundColor: Colors.white,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Color(0xFF1E3A8A), width: 1.2),
+            borderRadius: BorderRadius.circular(12),
           ),
           textStyle: bodyStyle(
             fontSize: 14,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.2,
           ),
+        ),
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: cardBg,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+          side: const BorderSide(color: borderMedium, width: 1.4),
         ),
       ),
     );

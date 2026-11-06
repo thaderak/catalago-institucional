@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/component_item.dart';
 import '../theme/app_theme.dart';
 
-/// Pantalla de Ficha Técnica Detallada responsive con opción de eliminación
+/// Pantalla de Ficha Técnica Detallada con diseño Obsidian Dark Tech
 class DetailsScreen extends StatelessWidget {
   static const String routeName = '/details';
   static const String hashRouteName = '/#/details';
@@ -21,23 +21,23 @@ class DetailsScreen extends StatelessWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFF111A2D),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-          side: const BorderSide(color: AppTheme.borderMedium, width: 1.5),
+          borderRadius: BorderRadius.circular(18),
+          side: const BorderSide(color: AppTheme.borderMedium, width: 1.4),
         ),
         title: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFFFEE2E2),
+                color: const Color(0xFF450A0A),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFFFCA5A5)),
+                border: Border.all(color: const Color(0xFFF43F5E).withValues(alpha: 0.5)),
               ),
               child: const FaIcon(
                 FontAwesomeIcons.trashCan,
-                color: Color(0xFFDC2626),
+                color: Color(0xFFFB7185),
                 size: 16,
               ),
             ),
@@ -48,6 +48,7 @@ class DetailsScreen extends StatelessWidget {
                 style: AppTheme.headingStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w800,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -57,7 +58,7 @@ class DetailsScreen extends StatelessWidget {
           '¿Está seguro de eliminar "${item.name}" del catálogo institucional?',
           style: AppTheme.bodyStyle(
             fontSize: 14,
-            color: const Color(0xFF475569),
+            color: AppTheme.textSecondary,
           ),
         ),
         actions: [
@@ -73,9 +74,9 @@ class DetailsScreen extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFDC2626),
+              backgroundColor: const Color(0xFFE11D48),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             onPressed: () => Navigator.of(ctx).pop(true),
@@ -106,10 +107,12 @@ class DetailsScreen extends StatelessWidget {
 
     if (item == null) {
       return Scaffold(
+        backgroundColor: AppTheme.scaffoldBg,
         appBar: AppBar(
+          backgroundColor: AppTheme.surfaceDark,
           title: Text(
             'Detalle del Componente',
-            style: AppTheme.headingStyle(fontWeight: FontWeight.bold),
+            style: AppTheme.headingStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: Center(
@@ -119,7 +122,7 @@ class DetailsScreen extends StatelessWidget {
               const FaIcon(
                 FontAwesomeIcons.circleExclamation,
                 size: 54,
-                color: Color(0xFFEF4444),
+                color: Color(0xFFFB7185),
               ),
               const SizedBox(height: 16),
               Text(
@@ -148,11 +151,20 @@ class DetailsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.scaffoldBg,
       appBar: AppBar(
+        backgroundColor: AppTheme.surfaceDark,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            color: AppTheme.borderSubtle,
+            height: 1,
+          ),
+        ),
         title: Text(
           item.name,
           style: AppTheme.headingStyle(
             fontSize: isMobile ? 17 : 19,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w800,
             color: Colors.white,
             letterSpacing: -0.2,
           ),
@@ -160,7 +172,7 @@ class DetailsScreen extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
           tooltip: 'Volver',
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -168,8 +180,8 @@ class DetailsScreen extends StatelessWidget {
           IconButton(
             icon: const FaIcon(
               FontAwesomeIcons.trashCan,
-              size: 17,
-              color: Colors.white,
+              size: 16,
+              color: Color(0xFFFB7185),
             ),
             tooltip: 'Eliminar este componente',
             onPressed: () => _showDeleteDialog(context, item),
@@ -179,64 +191,72 @@ class DetailsScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
-          horizontal: isMobile ? 12 : 20,
-          vertical: isMobile ? 16 : 24,
+          horizontal: isMobile ? 14 : 22,
+          vertical: isMobile ? 18 : 28,
         ),
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 720),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.borderMedium, width: 1.8),
+                color: const Color(0xFF111A2D),
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: AppTheme.borderMedium, width: 1.4),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 16,
-                    offset: const Offset(0, 4),
+                    color: Colors.black.withValues(alpha: 0.35),
+                    blurRadius: 28,
+                    offset: const Offset(0, 10),
                   ),
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(22),
                 child: Column(
                   children: [
-                    // Franja superior de acento con el color de la categoría
+                    // Franja superior de acento con el color neón de la categoría
                     Container(
-                      height: 6,
-                      color: catColor,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            catColor,
+                            catColor.withValues(alpha: 0.6),
+                            AppTheme.accentIndigo,
+                          ],
+                        ),
+                      ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(isMobile ? 18.0 : 28.0),
+                      padding: EdgeInsets.all(isMobile ? 20.0 : 32.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // Ícono circular destacado superior con anillo/borde concéntrico
+                          // Ícono circular destacado superior con halo concéntrico
                           Center(
                             child: Container(
-                              padding: const EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: catColor.withValues(alpha: 0.25),
-                                  width: 3,
+                                  color: catColor.withValues(alpha: 0.3),
+                                  width: 2.5,
                                 ),
                               ),
                               child: Container(
-                                width: isMobile ? 70 : 84,
-                                height: isMobile ? 70 : 84,
+                                width: isMobile ? 74 : 88,
+                                height: isMobile ? 74 : 88,
                                 decoration: BoxDecoration(
-                                  color: AppTheme.primaryBlue,
+                                  color: const Color(0xFF162238),
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: Colors.white,
-                                    width: 2.5,
+                                    color: catColor.withValues(alpha: 0.5),
+                                    width: 2,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppTheme.primaryBlue.withValues(alpha: 0.25),
-                                      blurRadius: 14,
+                                      color: catColor.withValues(alpha: 0.25),
+                                      blurRadius: 18,
                                       offset: const Offset(0, 5),
                                     ),
                                   ],
@@ -244,16 +264,16 @@ class DetailsScreen extends StatelessWidget {
                                 child: Center(
                                   child: FaIcon(
                                     item.iconData,
-                                    size: isMobile ? 30 : 38,
-                                    color: Colors.white,
+                                    size: isMobile ? 32 : 40,
+                                    color: catColor,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(height: isMobile ? 16 : 22),
+                          SizedBox(height: isMobile ? 18 : 24),
 
-                          // Título del Componente y Badge con bordes acentuados
+                          // Título del Componente y Badge
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -261,9 +281,9 @@ class DetailsScreen extends StatelessWidget {
                                 child: Text(
                                   item.name,
                                   style: AppTheme.headingStyle(
-                                    fontSize: isMobile ? 19 : 22,
+                                    fontSize: isMobile ? 20 : 23,
                                     fontWeight: FontWeight.w800,
-                                    color: AppTheme.textPrimary,
+                                    color: Colors.white,
                                     letterSpacing: -0.3,
                                   ),
                                 ),
@@ -271,15 +291,15 @@ class DetailsScreen extends StatelessWidget {
                               const SizedBox(width: 10),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 5,
+                                  horizontal: 11,
+                                  vertical: 5.5,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: catColor.withValues(alpha: 0.08),
+                                  color: catColor.withValues(alpha: 0.12),
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
-                                    color: catColor.withValues(alpha: 0.35),
-                                    width: 1.3,
+                                    color: catColor.withValues(alpha: 0.4),
+                                    width: 1.2,
                                   ),
                                 ),
                                 child: Row(
@@ -290,7 +310,7 @@ class DetailsScreen extends StatelessWidget {
                                       size: 11,
                                       color: catColor,
                                     ),
-                                    const SizedBox(width: 5),
+                                    const SizedBox(width: 6),
                                     Text(
                                       item.category,
                                       style: AppTheme.bodyStyle(
@@ -304,10 +324,10 @@ class DetailsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 18),
 
                           const Divider(color: AppTheme.borderSubtle, thickness: 1.2),
-                          const SizedBox(height: 14),
+                          const SizedBox(height: 16),
 
                           // Sección: Ficha Técnica y Descripción
                           Text(
@@ -315,32 +335,32 @@ class DetailsScreen extends StatelessWidget {
                             style: AppTheme.headingStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
-                              color: AppTheme.textPrimary,
+                              color: Colors.white,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 10),
                           Text(
                             item.description,
                             style: AppTheme.bodyStyle(
                               fontSize: 14,
                               height: 1.6,
-                              color: const Color(0xFF334155),
+                              color: AppTheme.textSecondary,
                             ),
                           ),
-                          const SizedBox(height: 22),
+                          const SizedBox(height: 24),
 
-                          // Bloque Destacado Verde: Responsive para teléfonos móviles
+                          // Bloque Destacado Verde Fintech
                           Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: isMobile ? 14 : 20,
-                              vertical: isMobile ? 14 : 18,
+                              horizontal: isMobile ? 16 : 22,
+                              vertical: isMobile ? 16 : 20,
                             ),
                             decoration: BoxDecoration(
                               color: AppTheme.greenBoxBg,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(14),
                               border: Border.all(
                                 color: AppTheme.greenBoxBorder,
-                                width: 1.6,
+                                width: 1.4,
                               ),
                             ),
                             child: isMobile && screenWidth < 380
@@ -361,7 +381,7 @@ class DetailsScreen extends StatelessWidget {
                                           const Icon(
                                             Icons.check_circle,
                                             size: 16,
-                                            color: AppTheme.greenTextDark,
+                                            color: AppTheme.priceGreen,
                                           ),
                                           const SizedBox(width: 6),
                                           Expanded(
@@ -376,21 +396,24 @@ class DetailsScreen extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      const SizedBox(height: 10),
+                                      const SizedBox(height: 12),
                                       Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 14,
+                                          vertical: 7,
+                                        ),
                                         decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: const Color(0xFF041E18),
                                           borderRadius: BorderRadius.circular(8),
                                           border: Border.all(
-                                            color: AppTheme.greenBoxBorder,
-                                            width: 1.4,
+                                            color: AppTheme.priceGreen.withValues(alpha: 0.5),
+                                            width: 1.2,
                                           ),
                                         ),
                                         child: Text(
                                           item.formattedPrice,
                                           style: AppTheme.headingStyle(
-                                            fontSize: 19,
+                                            fontSize: 20,
                                             fontWeight: FontWeight.w900,
                                             color: AppTheme.priceGreen,
                                           ),
@@ -420,7 +443,7 @@ class DetailsScreen extends StatelessWidget {
                                                 const Icon(
                                                   Icons.check_circle,
                                                   size: 16,
-                                                  color: AppTheme.greenTextDark,
+                                                  color: AppTheme.priceGreen,
                                                 ),
                                                 const SizedBox(width: 6),
                                                 Flexible(
@@ -441,19 +464,22 @@ class DetailsScreen extends StatelessWidget {
                                       ),
                                       const SizedBox(width: 10),
                                       Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 8,
+                                        ),
                                         decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(8),
+                                          color: const Color(0xFF041E18),
+                                          borderRadius: BorderRadius.circular(10),
                                           border: Border.all(
-                                            color: AppTheme.greenBoxBorder,
-                                            width: 1.4,
+                                            color: AppTheme.priceGreen.withValues(alpha: 0.5),
+                                            width: 1.2,
                                           ),
                                         ),
                                         child: Text(
                                           item.formattedPrice,
                                           style: AppTheme.headingStyle(
-                                            fontSize: 20,
+                                            fontSize: 21,
                                             fontWeight: FontWeight.w900,
                                             color: AppTheme.priceGreen,
                                             letterSpacing: -0.2,
@@ -463,23 +489,35 @@ class DetailsScreen extends StatelessWidget {
                                     ],
                                   ),
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 26),
 
-                          // Botón Volver al Catálogo
-                          SizedBox(
-                            height: 48,
+                          // Botón Volver al Catálogo con Degradado
+                          Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              gradient: AppTheme.primaryGradient,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.2),
+                                width: 1.2,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppTheme.accentIndigo.withValues(alpha: 0.35),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
                             child: ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: AppTheme.primaryBlue,
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  side: const BorderSide(
-                                    color: Color(0xFF1E3A8A),
-                                    width: 1.5,
-                                  ),
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              icon: const Icon(Icons.arrow_back, size: 18),
+                              icon: const Icon(Icons.arrow_back_rounded, size: 18, color: Colors.white),
                               label: Text(
                                 'Volver al Catálogo',
                                 style: AppTheme.bodyStyle(
@@ -496,29 +534,29 @@ class DetailsScreen extends StatelessWidget {
 
                           // Botón Secundario: Eliminar este componente
                           SizedBox(
-                            height: 44,
+                            height: 46,
                             child: OutlinedButton.icon(
                               style: OutlinedButton.styleFrom(
-                                foregroundColor: const Color(0xFFDC2626),
+                                foregroundColor: const Color(0xFFFB7185),
                                 side: const BorderSide(
-                                  color: Color(0xFFFCA5A5),
-                                  width: 1.4,
+                                  color: Color(0xFF991B1B),
+                                  width: 1.2,
                                 ),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
                               icon: const FaIcon(
                                 FontAwesomeIcons.trashCan,
                                 size: 14,
-                                color: Color(0xFFDC2626),
+                                color: Color(0xFFFB7185),
                               ),
                               label: Text(
                                 'Eliminar este Componente',
                                 style: AppTheme.bodyStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
-                                  color: const Color(0xFFDC2626),
+                                  color: const Color(0xFFFB7185),
                                 ),
                               ),
                               onPressed: () => _showDeleteDialog(context, item),
